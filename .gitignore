@@ -1,0 +1,48 @@
+# Python cache / environments
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+.venv_cuda/
+
+# Local data and generated artifacts
+data/
+datasets/
+dataset_*/
+exp_*/
+runs/
+runs_*/
+outputs/
+results/
+logs/
+*.log
+*.out.log
+*.err.log
+
+# Model checkpoints and large arrays
+*.pth
+*.pt
+*.ckpt
+*.npz
+*.npy
+
+# Paper / temporary render files
+*.doc
+*.docx
+*.pdf
+~$*
+_render*/
+_docx_review*/
+_*.bin
+_*.wmf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
