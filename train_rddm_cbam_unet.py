@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-# train_rddm_rgat.py
+# train_rddm_cbam_unet.py
 # -------------------------------------------------------------
-# RDDM + (R)GAT 训练脚本（增强版，日志 & 保存路径保持原样）
+# RDDM-CBAM-UNet 训练脚本
+# 默认配置即为论文第三章主线方法：backbone=unet, objective=rddm, unet_attention=cbam。
 # 新增开关：
 #   --identity-assert      恒等任务自检（第1个batch检查 max|xin-x0| 与理想损失）
 #   --decoder-zero-init    训练启动时把解码器权重置零/近零（sanity / 调试）
@@ -485,7 +486,7 @@ class Logger:
 
 # ----------------------------- 主函数 -----------------------------
 def main():
-    ap = argparse.ArgumentParser("RDDM + RGAT 训练脚本",
+    ap = argparse.ArgumentParser("RDDM-CBAM-UNet 训练脚本",
                                  formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     # 数据
@@ -501,8 +502,8 @@ def main():
     # 模型 / 扩散
     ap.add_argument("--image-size", type=int, default=8)
     ap.add_argument("--steps", type=int, default=400)
-    ap.add_argument("--backbone", type=str, default="rgat", choices=["rgat", "unet"],
-                    help="骨干网络：rgat=原方法，unet=RGAT 消融为卷积 UNet")
+    ap.add_argument("--backbone", type=str, default="unet", choices=["rgat", "unet"],
+                    help="骨干网络；RDDM-CBAM-UNet 使用 unet")
     ap.add_argument("--objective", type=str, default="rddm",
                     choices=["rddm", "rddm_x0", "direct", "ddim"],
                     help="训练目标：rddm=残差扩散，rddm_x0=扩散但直接预测x0，direct=无扩散直接回归，ddim=普通非残差DDIM")
@@ -527,7 +528,7 @@ def main():
     ap.add_argument("--gat-kmax", type=int, default=2, help="关系半径 |i-j|<=k_max；建议<=M-1")
     ap.add_argument("--unet-base", type=int, default=64, help="UNet 消融的基础通道数")
     ap.add_argument("--unet-attention", "--unet-attn", dest="unet_attention",
-                    type=str, default="none", choices=["none", "se", "cbam"],
+                    type=str, default="cbam", choices=["none", "se", "cbam"],
                     help="UNet FiLM 卷积块后的轻量注意力")
     ap.add_argument("--unet-skip-gate", action="store_true",
                     help="启用 decoder-conditioned 门控 skip connection")
@@ -539,7 +540,7 @@ def main():
     ap.add_argument("--amp", action="store_true")
     ap.add_argument("--grad-clip", type=float, default=1.0)
     ap.add_argument("--seed", type=int, default=2025)
-    ap.add_argument("--outdir", type=str, default="runs_rddm_t1024_snr_-8_to_-5_bestcfg")
+    ap.add_argument("--outdir", type=str, default="runs/rddm_cbam_unet")
     ap.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--init-ckpt", type=str, default="", help="可选：加载已有模型权重后继续训练/微调")
 

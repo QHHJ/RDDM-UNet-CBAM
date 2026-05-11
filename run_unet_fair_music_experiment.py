@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_PYTHON = ROOT / ".venv_cuda" / "Scripts" / "python.exe"
-TRAIN = ROOT / "train_rddm_rgat.py"
+TRAIN = ROOT / "train_rddm_rgat .py"
 EVAL = ROOT / "test.py"
 
 PRETRAIN_TRAIN = ROOT / "dataset_snap=128_snr_-8_to_-5_gaussian_train_400000" / "flom_mat_000.npz"

@@ -18,7 +18,6 @@ exp_*/
 runs/
 runs_*/
 outputs/
-results/
 logs/
 *.log
 *.out.log
@@ -26,6 +25,7 @@ logs/
 
 # Model checkpoints and large arrays
 *.pth
+!checkpoints/rddm_cbam_unet_best_music.pth
 *.pt
 *.ckpt
 *.npz
